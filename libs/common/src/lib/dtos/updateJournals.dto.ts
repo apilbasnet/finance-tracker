@@ -10,6 +10,7 @@ export class JournalDTO {
   //   @IsNumber()
   //   @IsNotEmpty()
   //   userId!: number;
+  //   test
 
   @IsString()
   @IsOptional()
