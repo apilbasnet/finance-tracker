@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@my-workspace/common": ["libs/common/src/index.ts"],
+      "@my-workspace/dtos": ["libs/dtos/src/index.ts"],
+      "@my-workspace/schema": ["libs/schema/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
