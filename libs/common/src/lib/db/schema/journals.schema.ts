@@ -1,4 +1,11 @@
-import { pgTable, serial, text, integer, date } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  serial,
+  text,
+  integer,
+  date,
+  timestamp,
+} from 'drizzle-orm/pg-core';
 import { users } from './auth.schema';
 import { relations } from 'drizzle-orm';
 
@@ -17,6 +24,12 @@ export const journals = pgTable('journals', {
   date: date('date').notNull().defaultNow(),
   debit: integer('debit').notNull(),
   credit: integer('credit').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .notNull()
+    .defaultNow(),
 });
 
 export const journalRelations = relations(journals, ({ one }) => ({

@@ -7,10 +7,6 @@ import {
 } from 'class-validator';
 
 export class JournalDTO {
-  @IsNumber()
-  @IsNotEmpty()
-  userId!: number;
-
   @IsString()
   @IsOptional()
   description?: string;

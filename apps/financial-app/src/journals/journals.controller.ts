@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JournalsService } from './journals.service';
-import { JournalDTO } from '@my-workspace/common';
+import { JournalDTO, updateJournalDTO } from '@my-workspace/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { UserPayload } from '@my-workspace/common';
@@ -39,9 +39,13 @@ export class JournalsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Patch()
-  updateJournalById(@Body() dto: JournalDTO, @Req() req: Request) {
-    return this.journalsService.updateJournal(dto, req.user as UserPayload);
+  @Patch(':id')
+  updateJournalById(
+    @Body() dto: updateJournalDTO,
+    @Req() req: Request,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return this.journalsService.updateJournal(id, dto, req.user as UserPayload);
   }
 
   @UseGuards(AuthGuard('jwt'))
