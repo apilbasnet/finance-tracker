@@ -27,6 +27,12 @@ export class JournalsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get('ledger')
+  generateLedger(@Req() req: Request) {
+    return this.journalsService.generateLedger(req.user as UserPayload);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   getJournalById(@Req() req: Request, @Param('id', ParseIntPipe) id: number) {
     return this.journalsService.getJournalById(id, req.user as UserPayload);
@@ -57,3 +63,5 @@ export class JournalsController {
     await this.journalsService.getJournalById(id, req.user as UserPayload);
   }
 }
+
+//

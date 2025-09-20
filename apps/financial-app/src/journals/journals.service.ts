@@ -90,4 +90,31 @@ export class JournalsService {
         and(eq(schema.journals.id, id), eq(schema.journals.userId, user.userId))
       );
   }
+
+  async generateLedger(user: UserPayload) {
+    const entries = await this.db.query.journals.findMany({
+      where: eq(schema.journals.userId, user.userId),
+    });
+
+    const ledger: Record<
+      string,
+      {
+        debitTotal: number;
+        creditTotal: number;
+        balance: number;
+      }
+    > = {};
+
+    for (const entry of entries) {
+      if (!ledger[entry.account]) {
+        ledger[entry.account] = { debitTotal: 0, creditTotal: 0, balance: 0 };
+      }
+
+      ledger[entry.account].debitTotal += entry.debit;
+      ledger[entry.account].creditTotal += entry.credit;
+      ledger[entry.account].balance =
+        ledger[entry.account].debitTotal - ledger[entry.account].creditTotal;
+    }
+    return ledger;
+  }
 }
