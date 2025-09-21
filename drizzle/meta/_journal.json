@@ -15,6 +15,34 @@
       "when": 1758102485721,
       "tag": "0001_icy_tony_stark",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1758166383764,
+      "tag": "0002_lush_trish_tilby",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1758167115124,
+      "tag": "0003_fast_marvel_boy",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1758167222397,
+      "tag": "0004_ordinary_boomer",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1758167717485,
+      "tag": "0005_elite_zemo",
+      "breakpoints": true
     }
   ]
 }

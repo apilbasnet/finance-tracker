@@ -1,9 +1,15 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { JournalDTO } from '@my-workspace/common';
 import { DATABASE_CONNECTION } from '../database/database-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '@my-workspace/common';
-import { UserPayload } from '@my-workspace/common';
+import { UserPayload, updateJournalDTO } from '@my-workspace/common';
 import { and, eq } from 'drizzle-orm';
 
 @Injectable()
@@ -59,8 +65,22 @@ export class JournalsService {
     return journal;
   }
 
-  updateJournal(dto: JournalDTO, user: UserPayload) {
-    return { dto };
+  async updateJournal(id: number, dto: updateJournalDTO, user: UserPayload) {
+    const updateData = { ...dto, updatedAt: new Date() };
+
+    const [updated] = await this.db
+      .update(schema.journals)
+      .set(updateData)
+      .where(
+        and(eq(schema.journals.id, id), eq(schema.journals.userId, user.userId))
+      )
+      .returning();
+
+    if (!updated) {
+      throw new NotFoundException('Journal entry not found');
+    }
+
+    return updated;
   }
 
   async deleteJournal(id: number, user: UserPayload) {
@@ -69,5 +89,32 @@ export class JournalsService {
       .where(
         and(eq(schema.journals.id, id), eq(schema.journals.userId, user.userId))
       );
+  }
+
+  async generateLedger(user: UserPayload) {
+    const entries = await this.db.query.journals.findMany({
+      where: eq(schema.journals.userId, user.userId),
+    });
+
+    const ledger: Record<
+      string,
+      {
+        debitTotal: number;
+        creditTotal: number;
+        balance: number;
+      }
+    > = {};
+
+    for (const entry of entries) {
+      if (!ledger[entry.account]) {
+        ledger[entry.account] = { debitTotal: 0, creditTotal: 0, balance: 0 };
+      }
+
+      ledger[entry.account].debitTotal += entry.debit;
+      ledger[entry.account].creditTotal += entry.credit;
+      ledger[entry.account].balance =
+        ledger[entry.account].debitTotal - ledger[entry.account].creditTotal;
+    }
+    return ledger;
   }
 }

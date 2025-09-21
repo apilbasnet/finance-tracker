@@ -1,31 +1,20 @@
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-} from 'class-validator';
+import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
-export class JournalDTO {
-  //   @IsNumber()
-  //   @IsNotEmpty()
-  //   userId!: number;
-  //   test
-
+export class updateJournalDTO {
   @IsString()
   @IsOptional()
   description?: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   account?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @Min(0)
   debit?: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @Min(0)
   credit?: number;
