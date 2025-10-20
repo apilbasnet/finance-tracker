@@ -8,7 +8,7 @@ export class AuthController {
 
   @Post('signup')
   signup(@Body() dto: SignUpDto) {
-    console.log('🔵 SIGNUP endpoint called with:', { dto });
+    console.log('➡️ SIGNUP endpoint called with:', { dto });
 
     return this.authService.signup(dto);
   }
@@ -16,7 +16,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('signin')
   signin(@Body() dto: SignInDto) {
-    console.log('🟢 SIGNIN endpoint called with:', { dto });
+    console.log('➡️ SIGNIN endpoint called with:', { dto });
 
     return this.authService.signin(dto);
   }

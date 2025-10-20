@@ -64,4 +64,6 @@ export class JournalsController {
   }
 }
 
-//
+  
+
+// this is just for a test and git commit practice
